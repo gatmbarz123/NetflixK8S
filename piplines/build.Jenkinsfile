@@ -8,8 +8,8 @@ pipeline {
     }
     
     environment {        
-        IMAGE_TAG = "v1.0.$BUILD_NUMBER"
-        IMAGE_BASE_NAME = "diskoproject/netflix"
+        IMAGE_TAG = "latest"
+        IMAGE_BASE_NAME = "netflix"
         
         DOCKER_CREDS = credentials('dockerhub')
         DOCKER_USERNAME = "${DOCKER_CREDS_USR}"  // The _USR suffix added to access the username value 
