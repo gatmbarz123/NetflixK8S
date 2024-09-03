@@ -8,7 +8,7 @@ pipeline {
     }
     
     environment {        
-        IMAGE_TAG = "latest"
+        IMAGE_TAG = "v1.0.$BUILD_NUMBER"
         IMAGE_BASE_NAME = "netflix"
         
         DOCKER_CREDS = credentials('dockerhub')
@@ -30,8 +30,8 @@ pipeline {
                 sh '''
                   IMAGE_FULL_NAME=$DOCKER_USERNAME/$IMAGE_BASE_NAME:$IMAGE_TAG
                 
-                  docker build IMAGE_FULL_NAME
-                  docker push IMAGE_FULL_NAME
+                  docker build -t "IMAGE_FULL_NAME" .
+                  docker push "IMAGE_FULL_NAME"
                 '''
             }
         }
