@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: netflix-frontend-tag
-        image: keretdodor/netflix-frontend:latest
+        image: diskoproject/netflix:latest
         env: 
           - name: MOVIE_CATALOG_SERVICE
             value: "http://netflix-api-service:8080"

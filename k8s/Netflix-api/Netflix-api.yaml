@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: netflix-api-tag
-        image: keretdodor/netflix-catalog:latest
+        image: diskoproject/netflixapi:latest
        
 ---
 
