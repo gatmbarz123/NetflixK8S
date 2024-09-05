@@ -9,11 +9,11 @@ pipeline {
     stages {
         stage('Deploy') {
             steps {
-                sh '''
-                cd k8/$(SERVICE_NAME)
-                sed -i "s|image: .*[image : $IMAGE_FULL_NAME_PARAM]" Netflix-frontend.yaml
-                git add Netflix-frontend.yaml'
-                git commit -m "NEW CHANGE: $(IMAGE_FULL_NAME_PARAM)"
+                sh ''' 
+                    cd k8/$(SERVICE_NAME)
+                    sed -i "s|image: .*[image : $IMAGE_FULL_NAME_PARAM]" Netflix-frontend.yaml
+                    git add Netflix-frontend.yaml'
+                    git commit -m "NEW CHANGE: $(IMAGE_FULL_NAME_PARAM)"
                 '''
             }
         }
