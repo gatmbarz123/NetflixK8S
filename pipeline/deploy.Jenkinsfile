@@ -16,7 +16,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh ''' 
-                    cd k8s/${SERVICE_NAME}
+                    cd dev/${SERVICE_NAME}
                     sed -i "s|image: .*[image : $IMAGE_FULL_NAME_PARAM]|image: $IMAGE_FULL_NAME_PARAM|" deployed-dev.yaml
                     git add "deployed-dev.yaml"
                     git commit -m "NEW CHANGE: $IMAGE_FULL_NAME_PARAM"
