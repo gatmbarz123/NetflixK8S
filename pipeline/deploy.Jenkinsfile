@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Git Setup') {
             steps {             
-                sh 'git checkout -b main || git checkout main'
+                sh 'git checkout -b dev || git checkout dev'
             }
         }  // <- This closing bracket was missing
 
