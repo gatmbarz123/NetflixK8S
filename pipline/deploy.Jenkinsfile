@@ -7,6 +7,11 @@ pipeline {
     }
 
     stages {
+        stage('Git Setup') {
+            steps {             
+                sh 'git checkout -b main || git checkout main'
+            }
+
         stage('Deploy') {
             steps {
                 sh ''' 
@@ -19,10 +24,9 @@ pipeline {
         }
         stage ('Push to Github'){
             setup{
-                withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GITHUB_USERNAME',passwordVariable: 'GIT_TOKEN')])
-                sh '''
-                git push https://$GITHUB_TOKEN@github.com/gatmbarz123/NetflixK8S.git main 
-                '''
+                withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_TOKEN')])
+                sh 'git push https://$GITHUB_TOKEN@github.com/gatmbarz123/NetflixK8S.git'
+            
             }
         }
 
