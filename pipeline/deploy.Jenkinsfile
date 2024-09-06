@@ -11,7 +11,7 @@ pipeline {
             steps {             
                 sh 'git checkout -b dev || git checkout dev'
             }
-        }  // <- This closing bracket was missing
+        }  // <- This closing bracket was missing add this to see changes !
 
         stage('Deploy') {
             steps {
