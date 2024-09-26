@@ -42,7 +42,7 @@ pipeline {
                     sh ''' 
                     cd tf
                     terraform init
-                    terraform apply -auto-approve -var-file tf/regions.$region.$env.tfvars
+                    terraform apply -auto-approve -var-file regions.$region.$env.tfvars
                     '''
                 }
             
