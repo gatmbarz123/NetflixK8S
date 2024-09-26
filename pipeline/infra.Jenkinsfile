@@ -7,6 +7,14 @@ pipeline {
     }
 
     stages {
+        stage("Check user"){
+            steps{
+                sh 'whoami'
+                sh 'id'
+            }
+        }
+
+
         stage("Install Terraform") {
             steps {
                 sh '''

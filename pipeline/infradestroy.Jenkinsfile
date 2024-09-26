@@ -10,6 +10,7 @@ pipeline {
         stage("Check user"){
             steps{
                 sh 'whoami'
+                sh 'id'
             }
         }
 
