@@ -1,5 +1,5 @@
 pipeline {
-    agent any 
+    agent { label 'agent1' }
 
      parameters{
         choice(name: 'env', choices: ['prod','dev'], description: 'env')
@@ -18,9 +18,6 @@ pipeline {
         stage("Install Terraform") {
             steps {
                 sh '''
-                sudo su -- root 
-                whoami
-                id 
                 apt-get update || true
                 apt-get install -y wget gnupg2 || true
 
