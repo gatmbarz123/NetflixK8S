@@ -17,8 +17,7 @@ terraform {
 }
 
 provider "aws" {
-  region  = var.region
-  profile = "default"  
+  region  = var.region 
 }
 
 resource "aws_instance" "netflix_app" {
