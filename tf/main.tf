@@ -6,24 +6,31 @@ terraform {
     }
   }
 
+   backend "s3" {
+    bucket = "terraform.bar"
+    key    = "tfstate.json"
+    region = "eu-north-1"
+  
+  }
+
   required_version = ">= 1.7.0"
 }
 
 provider "aws" {
-  region  = "eu-north-1"
-  profile = "default"  
+  region  = var.region 
 }
 
 resource "aws_instance" "netflix_app" {
-  ami           = "ami-04cdc91e49cb06165"
-  instance_type = "t3.micro"
+  ami           = var.ami_id
+  instance_type = var.instance_type
   security_groups = [aws_security_group.netflix_app_sg.name]
-  key_name  =   aws_key_pair.netflix_key_pair.key_name
+  key_name  =   var.key_pairs
   depends_on =  [aws_s3_bucket.netflix_s3]
-  user_data = file("~/Desktop/docker_image_terraform.sh")
+  availability_zone = var.az
+  user_data = file("docker_image_terraform.sh")
 
   tags = {
-    Name = "terraform-server"
+    Name = "terraform-server-${var.env}"
   }
 }
 
@@ -60,17 +67,12 @@ resource "aws_security_group" "netflix_app_sg" {
   }
 }
 
-resource "aws_key_pair" "netflix_key_pair" {
-  key_name   = "my-generated-key-pair"
-  public_key = file("~/Desktop/Keys/terraform.pub")
-}
-
 resource "aws_ebs_volume" "netflix_ebs" {
-  availability_zone = "eu-north-1b"
+  availability_zone = var.az
   size              = 1
 
   tags = {
-    Name = "TerraformEBS"
+    Name = "TerraformEBS-${var.env}"
   }
 }
 
@@ -81,11 +83,10 @@ resource "aws_volume_attachment" "netflix_ebs_att" {
 }
 
 resource "aws_s3_bucket" "netflix_s3" {
-  bucket = "terraform-bar-bucket"
+  bucket = var.bucket
 
   tags = {
-    Name        = "Terrafom-Netflix"
-    Environment = "Dev"
+    Name = "Terrafom-Netflix-${var.env}"
   }
 }
 
