@@ -10,9 +10,7 @@ pipeline {
         stage("Install Terraform") {
             steps {
                 sh '''
-                whoami
-                id
-                ls -l /usr/bin/terraform
+                
                 apt-get update || true
                 apt-get install -y wget gnupg2 || true
 
