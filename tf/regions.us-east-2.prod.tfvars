@@ -1,0 +1,7 @@
+env = "prod"
+region = "us-east-2"
+instance_type = "t2.micro"
+az = "us-east-2b"
+ami_id = "ami-085f9c64a9b75eed5"
+key_pairs = "ort-ans"
+bucket = "terraform-bar-bucket-prod"
