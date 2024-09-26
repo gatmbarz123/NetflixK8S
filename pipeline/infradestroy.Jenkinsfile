@@ -9,22 +9,29 @@ pipeline {
     stages {
         stage("Install Terraform") {
             steps {
-                sh '''
-                
-                apt-get update || true
-                apt-get install -y wget gnupg2 || true
+                 script {
+                    // Attempt to install Terraform
+                    def result = sh(script: '''
+                    apt-get update || true
+                    apt-get install -y wget gnupg2 || true
+                    
+                    # Add HashiCorp GPG key
+                    wget -qO- https://apt.releases.hashicorp.com/gpg | gpg --dearmor --batch -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+                    
+                    # Add HashiCorp repository
+                    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list
+                    
+                    # Update package lists again
+                    apt-get update 
+                    
+                    # Install Terraform
+                    apt-get install -y terraform
+                    terraform version
+                    ''', returnStatus: true)
 
-                if [ -f /usr/share/keyrings/hashicorp-archive-keyring.gpg ]; then
-                    rm /usr/share/keyrings/hashicorp-archive-keyring.gpg
-                fi
-
-                wget -qO- https://apt.releases.hashicorp.com/gpg | gpg --dearmor --batch -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-                echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list
-                apt-get update 
-                # Install Terraform
-                apt-get install -y terraform
-                terraform version
-                '''
+                    if (result != 0) {
+                        error("Terraform installation failed with status: ${result}")
+                    }
             }
         }
 
