@@ -29,7 +29,7 @@ pipeline {
         }
 
         stage("Terraform Workspace") {
-            step{
+            steps{
                 sh '''
                 terraform workspace select $region || terraform workspace new $region
                 '''
