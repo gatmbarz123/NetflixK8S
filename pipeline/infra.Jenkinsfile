@@ -11,7 +11,7 @@ pipeline{
         stage("Terraforn install"){
             steps{
                 sh '''
-                apt-get update && apt-get install -y gnupg software-properties-common
+                apt-get update && apt-get install -y gnupg software-properties-common wget
                 
                 wget -O- https://apt.releases.hashicorp.com/gpg | \
                 gpg --dearmor | \
