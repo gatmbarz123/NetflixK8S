@@ -2,7 +2,6 @@ pipeline {
     agent { label 'agent1' }
 
      parameters{
-        choice(name: 'env', choices: ['prod','dev'], description: 'env')
         choice(name: 'region', choices: ['eu-north-1', 'us-east-2'], description: 'region')
     }
 
@@ -48,7 +47,7 @@ pipeline {
                     sh ''' 
                     cd tf
                     terraform init
-                    terraform destroy -auto-approve -var-file regions.$region.$env.tfvars
+                    terraform destroy -auto-approve -var-file regions.$region.prod.tfvars
                     '''
                 }
             

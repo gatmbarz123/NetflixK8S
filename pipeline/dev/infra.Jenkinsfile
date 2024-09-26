@@ -1,20 +1,11 @@
 pipeline {
-    agent any 
+    agent { label 'agent1' } 
 
      parameters{
-        choice(name: 'env', choices: ['prod','dev'], description: 'env')
         choice(name: 'region', choices: ['eu-north-1', 'us-east-2'], description: 'region')
     }
 
     stages {
-        stage("Check user"){
-            steps{
-                sh 'whoami'
-                sh 'id'
-            }
-        }
-
-
         stage("Install Terraform") {
             steps {
                 sh '''
@@ -50,7 +41,7 @@ pipeline {
                     sh ''' 
                     cd tf
                     terraform init
-                    terraform apply -auto-approve -var-file regions.$region.$env.tfvars
+                    terraform apply -auto-approve -var-file regions.$region.dev.tfvars
                     '''
                 }
             
