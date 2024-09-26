@@ -8,28 +8,20 @@ pipeline{
     }
 
     stages{
-        stage("Terraforn install"){
-            steps{
+        stage("Install Terraform") {
+            steps {
                 sh '''
-                apt-get update && apt-get install -y gnupg software-properties-common wget
-                
-                wget -O- https://apt.releases.hashicorp.com/gpg | \
-                gpg --dearmor | \
-                tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
+                apt-get update && sudo apt-get install -y gnupg software-properties-common wget
 
-                gpg --no-default-keyring \
-                --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
-                --fingerprint
+                wget -qO- https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
 
-                echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
-                https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
-                tee /etc/apt/sources.list.d/hashicorp.list
+                echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list
 
                 apt-get update 
 
                 apt-get install -y terraform
 
-                terafform version
+                terraform version
                 '''
             }
         }
