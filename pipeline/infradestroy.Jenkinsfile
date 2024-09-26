@@ -18,8 +18,8 @@ pipeline {
         stage("Install Terraform") {
             steps {
                 sh '''
-                apt-get update || true
-                apt-get install -y wget gnupg2 || true
+                sudo apt-get update || true
+                sudo apt-get install -y wget gnupg2 || true
 
                 if [ -f /usr/share/keyrings/hashicorp-archive-keyring.gpg ]; then
                     rm /usr/share/keyrings/hashicorp-archive-keyring.gpg
