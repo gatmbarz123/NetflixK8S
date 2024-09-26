@@ -34,6 +34,7 @@ pipeline {
                     }
             }
         }
+        }
 
         stage("Terraform Workspace") {
             steps{
@@ -57,4 +58,4 @@ pipeline {
         }
     }
 }
-}
+
