@@ -25,9 +25,9 @@ pipeline{
                 https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
                 tee /etc/apt/sources.list.d/hashicorp.list
 
-                apt update
+                apt-get update 
 
-                apt-get install terraform
+                apt-get install -y terraform
 
                 terafform version
                 '''
