@@ -11,7 +11,9 @@ pipeline {
             steps {
                 sh '''
             
-                apt-get update && apt-get install -y gnupg software-properties-common wget
+                apt-get update || true
+                apt-get install -y wget gnupg2 || true
+
                 wget -qO- https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
                 echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list
                 apt-get update 
