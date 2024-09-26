@@ -28,7 +28,7 @@ resource "aws_instance" "netflix_app" {
   key_name  =   var.key_pairs
   depends_on =  [aws_s3_bucket.netflix_s3]
   availability_zone = var.az
-  user_data = file("~/Desktop/docker_image_terraform.sh")
+  user_data = file("docker_image_terraform.sh")
 
   tags = {
     Name = "terraform-server-${var.env}"
