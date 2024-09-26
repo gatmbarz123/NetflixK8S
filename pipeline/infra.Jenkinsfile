@@ -30,6 +30,7 @@ pipeline {
 
         stage("Terraform Workspace") {
             steps {
+                withCredentials([usernamePassword(credentialsId: 'AWS', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')])
                 sh '''
                 terraform workspace select $region || terraform workspace new $region
                 '''
