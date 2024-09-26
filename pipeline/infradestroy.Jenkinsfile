@@ -19,6 +19,8 @@ pipeline {
             steps {
                 sh '''
                 sudo su -- root 
+                whoami
+                id 
                 apt-get update || true
                 apt-get install -y wget gnupg2 || true
 
