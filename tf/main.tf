@@ -20,73 +20,20 @@ provider "aws" {
   region  = var.region 
 }
 
-resource "aws_instance" "netflix_app" {
-  ami           = var.ami_id
-  instance_type = var.instance_type
-  security_groups = [aws_security_group.netflix_app_sg.name]
-  key_name  =   var.key_pairs
-  depends_on =  [aws_s3_bucket.netflix_s3]
-  availability_zone = var.az
-  user_data = file("docker_image_terraform.sh")
+module "netflix_app" {
+  source = "./module/netflix-app"
 
-  tags = {
-    Name = "terraform-server-${var.env}"
-  }
+  aws_region         = var.region
+  ami_id             = data.aws_ami.ubuntu_ami.id 
+  vpc_cidr           = "10.0.0.0/16"
+  subnet_cidr_private = "10.0.1.0/24"
+  subnet_cidr_public = "10.0.2.0/24"
+  availability_zone  = data.aws_availability_zones.available_azs.names
+  instance_type      = var.instance_type
+  key_name           = var.key_pairs
 }
 
-resource "aws_security_group" "netflix_app_sg" {
-  name        = "terraform-netflix-app-sg"   
-  description = "Allow SSH and HTTP traffic"
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 
-  ingress {
-    from_port   = 3000
-    to_port     = 3000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-resource "aws_ebs_volume" "netflix_ebs" {
-  availability_zone = var.az
-  size              = 1
-
-  tags = {
-    Name = "TerraformEBS-${var.env}"
-  }
-}
-
-resource "aws_volume_attachment" "netflix_ebs_att" {
-  device_name = "/dev/sdh"
-  volume_id   = aws_ebs_volume.netflix_ebs.id
-  instance_id = aws_instance.netflix_app.id
-}
-
-resource "aws_s3_bucket" "netflix_s3" {
-  bucket = var.bucket
-
-  tags = {
-    Name = "Terrafom-Netflix-${var.env}"
-  }
-}
 
